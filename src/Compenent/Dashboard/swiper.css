@@ -1,0 +1,17 @@
+.swiper-slide{
+    
+    
+    border: 2px red solid;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.swiper-slide {
+  @apply w-3/4 sm:w-1/3 md:w-1/4;
+}
+
+
+  

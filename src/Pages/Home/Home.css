@@ -1,0 +1,7 @@
+ul {
+    scrollbar-width: none;
+}
+
+ul::-webkit-scrollbar {
+    display: none;
+}
