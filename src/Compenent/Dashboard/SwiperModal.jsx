@@ -1,5 +1,8 @@
 import { motion } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
+// @ts-ignore
+import myImg from"../../../public/img/rh.jpg";
+
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -23,7 +26,9 @@ export default function SwiperModal() {
         width: "100%",
         height: "100%",
         padding: "40px 0",
-        backgroundColor: "rgb(26 26 26)",
+        backgroundColor: "rgb(61 58 58)",
+        top:0,
+        zIndex:100
       }}
       effect={"coverflow"}
       grabCursor={true}
@@ -72,8 +77,8 @@ export default function SwiperModal() {
               </div>
             )}
             <img
-              className="h-4/5"
-              src="https://swiperjs.com/demos/images/nature-1.jpg"
+              className="h-96 w-96"
+              src={myImg}
             />
           </div>
         )}
@@ -91,7 +96,7 @@ export default function SwiperModal() {
               </div>
             )}
             <img
-              className="h-4/5"
+              className="h-96 w-96"
               src="https://swiperjs.com/demos/images/nature-1.jpg"
             />
           </div>

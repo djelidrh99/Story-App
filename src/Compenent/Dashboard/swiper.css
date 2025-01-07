@@ -1,12 +1,14 @@
 .swiper-slide{
     
     
-    border: 2px red solid;
+    
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: black;
+    border-radius: 8px;
 }
 
 .swiper-slide {
