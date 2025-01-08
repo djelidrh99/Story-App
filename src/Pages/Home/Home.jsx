@@ -2,6 +2,7 @@ import { useEffect,  useState } from "react";
 import { PiPlusBold } from "react-icons/pi";
 import { useSetModal } from "../../Context/ModalContext";
 import { subHours,differenceInHours ,differenceInMilliseconds} from "date-fns";
+import { useFile,useSetFile } from "../../Context/StoryContext";
 
 import './Home.css';
 
@@ -9,7 +10,9 @@ import './Home.css';
 
 
 export default function Home () {
-    const [file, setFile] = useState([]);
+    // const [file, setFile] = useState([]);
+    const file=useFile()
+    const setFile=useSetFile()
     const setModal=useSetModal();
 
     //  const i = file? differenceInMilliseconds(new Date(), file[0].date)/1000:0
@@ -27,13 +30,15 @@ export default function Home () {
     }
 
 
-    const handleDelete =useEffect(()=>{
+    useEffect(()=>{
        const storyUpdate =  file.filter((item,index)=>{
         return (differenceInMilliseconds(new Date(), item.date)/1000)<20
     })
     if (JSON.stringify(storyUpdate) !== JSON.stringify(file)) {
         setFile(storyUpdate);
     }
+   
+     
     },[file]) 
  
 

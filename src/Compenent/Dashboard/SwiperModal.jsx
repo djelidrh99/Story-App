@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-// @ts-ignore
-import myImg from"../../../public/img/rh.jpg";
+import { useFile } from "../../Context/StoryContext";
+import { FaPause } from "react-icons/fa";
+import { FaPlay } from "react-icons/fa";
+import { LuX } from "react-icons/lu";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -15,12 +17,35 @@ import {
 } from "swiper/modules";
 import { GiCancel } from "react-icons/gi";
 import { useSetModal } from "../../Context/ModalContext";
+import { useEffect, useRef, useState } from "react";
 
 export default function SwiperModal() {
   const setModal = useSetModal();
+  const file =useFile()
+  const [isAutoPlay,setIsAutoPlay]=useState(true)
+  const swipeRef=useRef()
+  const [currentWisth,setCurrentWidth]=useState("0%")
+  const autoplayStop=  ()=>{
+    // @ts-ignore
+    if (swipeRef.current && swipeRef.current.autoplay ) {
+      if(isAutoPlay){
+       
+        console.log("pause")
+        // @ts-ignore
+        swipeRef.current.autoplay.stop()
+      } else {
+        
+        // @ts-ignore
+        swipeRef.current.autoplay.start()
+      }
+      setIsAutoPlay(!isAutoPlay)
+    }
+  }
 
   return (
     <Swiper
+    // @ts-ignore
+    onSwiper={(swiper)=>(swipeRef.current=swiper)}
       style={{
         position: "fixed",
         width: "100%",
@@ -28,13 +53,14 @@ export default function SwiperModal() {
         padding: "40px 0",
         backgroundColor: "rgb(61 58 58)",
         top:0,
+        left:0,
         zIndex:100
       }}
       effect={"coverflow"}
       grabCursor={true}
       centeredSlides={true}
       autoplay={{
-        delay: 2500,
+        delay: 3000,
         disableOnInteraction: true,
       }}
       slidesPerView={"auto"}
@@ -50,7 +76,7 @@ export default function SwiperModal() {
       modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
       className="mySwiper"
     >
-      <GiCancel
+      <LuX
         onClick={() => {
           setModal(false);
         }}
@@ -59,49 +85,43 @@ export default function SwiperModal() {
           color: "white",
           cursor: "pointer",
           position: "absolute",
-          top: "10px",
-          right: "40px",
+          top: "2%",
+          right: "4%",
           scale: 1.1,
         }}
       />
-      <SwiperSlide>
+
+      {file.map((item,index)=>{
+        return(
+          <SwiperSlide key={index}>
+           
+            
         {({ isActive }) => (
           <div>
             {isActive && (
-              <div className="w-11/12 rounded-full overflow-hidden bg-red-700 -translate-x-1/2 h-1.5 top-4 left-1/2 absolute z-50 ">
+              <div className="w-11/12 rounded-full overflow-hidden bg-gray-300 -translate-x-1/2 h-1.5 top-4 left-1/2 absolute z-50 ">
                 <motion.span
-                  initial={{ width: 0 }}
-                  animate={{ width: 400, transition: { duration: 10 } }}
-                  className="h-full  bg-orange-600 block"
+                  initial={{width:"0%"}}
+                  animate={{width:isAutoPlay?"100%":currentWisth}}
+                   transition={{ duration: 3}}
+                   // @ts-ignore
+                   onUpdate={(latest)=>{setCurrentWidth(latest.width)}}
+                  className="h-full  bg-gray-600 block"
                 ></motion.span>
               </div>
             )}
+            {isActive && isAutoPlay?<FaPause onClick={autoplayStop} className="absolute top-10 right-6 cursor-pointer text-white"/>:<FaPlay onClick={autoplayStop} className="absolute top-10 right-6 cursor-pointer text-white"/>}
+             
             <img
               className="h-96 w-96"
-              src={myImg}
+              src={item.story}
             />
           </div>
         )}
       </SwiperSlide>
-      <SwiperSlide>
-        {({ isActive }) => (
-          <div>
-            {isActive && (
-              <div className="w-11/12 rounded-full overflow-hidden bg-red-700 -translate-x-1/2 h-1.5 top-4 left-1/2 absolute z-50 ">
-                <motion.span
-                  initial={{ width: 0 }}
-                  animate={{ width: 400, transition: { duration: 10 } }}
-                  className="h-full  bg-orange-600 block"
-                ></motion.span>
-              </div>
-            )}
-            <img
-              className="h-96 w-96"
-              src="https://swiperjs.com/demos/images/nature-1.jpg"
-            />
-          </div>
-        )}
-      </SwiperSlide>
+        )
+      })}
+      
     </Swiper>
   );
 }
