@@ -8,6 +8,8 @@ import Search from "./Pages/Search/Search";
 import Home from "./Pages/Home/Home";
 import ModalProvider from "./Context/ModalContext";
 import StoryProvider from "./Context/StoryContext";
+import Create from "./Pages/Create/Create";
+import Message from "./Pages/Message/Message";
 
 function App() {
   return (
@@ -26,6 +28,10 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="search" element={<Search />} />
+          <Route path="create" element={<Create />} />
+          <Route path="messages" element={<Message />} />
+
+
         </Route>
       </Routes>
     </ModalProvider>

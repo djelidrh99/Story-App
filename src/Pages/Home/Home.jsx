@@ -1,23 +1,21 @@
-import { useEffect,  useState } from "react";
-import { PiPlusBold } from "react-icons/pi";
+import { useEffect } from "react";
 import { useSetModal } from "../../Context/ModalContext";
-import { subHours,differenceInHours ,differenceInMilliseconds} from "date-fns";
+import { differenceInMilliseconds} from "date-fns";
 import { useFile,useSetFile } from "../../Context/StoryContext";
-
+import { useNavigate } from "react-router-dom";
+import { PiPlusBold } from "react-icons/pi";
 import './Home.css';
 
 
 
 
 export default function Home () {
-    // const [file, setFile] = useState([]);
     const file=useFile()
     const setFile=useSetFile()
     const setModal=useSetModal();
+    const navigate =useNavigate()
 
-    //  const i = file? differenceInMilliseconds(new Date(), file[0].date)/1000:0
-    //  console.log(i);
-
+// ADD NEW STORY
     const handleFileChange = (e) => {
         const validateFile = ["image/jpeg","image/png","image/jpg"];
         if(validateFile.includes(e.target.files[0].type)&&e.target.files[0].type){
@@ -29,10 +27,10 @@ export default function Home () {
            
     }
 
-
+// DELETE STORY AFTER 24H
     useEffect(()=>{
        const storyUpdate =  file.filter((item,index)=>{
-        return (differenceInMilliseconds(new Date(), item.date)/1000)<20
+        return (differenceInMilliseconds(new Date(), item.date)/1000)<86400
     })
     if (JSON.stringify(storyUpdate) !== JSON.stringify(file)) {
         setFile(storyUpdate);
@@ -40,6 +38,13 @@ export default function Home () {
    
      
     },[file]) 
+
+
+    //DECONECTED FROM APP
+    const logout= ()=>{
+        localStorage.removeItem("token")
+        navigate("/")
+     }
  
 
 
@@ -74,7 +79,7 @@ export default function Home () {
             </ul>
         </div>
         <div className="">
-              post
+              <button onClick={logout} >Deconected</button>
         </div>
     </div>
   )

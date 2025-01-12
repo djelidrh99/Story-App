@@ -15,9 +15,8 @@ import {
   Navigation,
   Autoplay,
 } from "swiper/modules";
-import { GiCancel } from "react-icons/gi";
 import { useSetModal } from "../../Context/ModalContext";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 
 export default function SwiperModal() {
   const setModal = useSetModal();
@@ -45,7 +44,13 @@ export default function SwiperModal() {
   return (
     <Swiper
     // @ts-ignore
-    onSwiper={(swiper)=>(swipeRef.current=swiper)}
+    onSwiper={(swiper)=>{
+      setIsAutoPlay(true)
+      setCurrentWidth("0%")
+      // @ts-ignore
+      return (swipeRef.current=swiper)
+    
+    }}
       style={{
         position: "fixed",
         width: "100%",
@@ -74,6 +79,7 @@ export default function SwiperModal() {
       pagination={false}
       navigation={true}
       modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+      
       className="mySwiper"
     >
       <LuX
