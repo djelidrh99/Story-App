@@ -7,13 +7,11 @@ import Rogister from "./Compenent/Register/Rogister";
 import Search from "./Pages/Search/Search";
 import Home from "./Pages/Home/Home";
 import ModalProvider from "./Context/ModalContext";
-import StoryProvider from "./Context/StoryContext";
 import Create from "./Pages/Create/Create";
 import Message from "./Pages/Message/Message";
 
 function App() {
   return (
-    <StoryProvider>
     <ModalProvider>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -35,7 +33,6 @@ function App() {
         </Route>
       </Routes>
     </ModalProvider>
-    </StoryProvider>
   );
 }
 

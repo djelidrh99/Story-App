@@ -1,25 +1,58 @@
 import { useEffect } from "react";
 import { useSetModal } from "../../Context/ModalContext";
-import { differenceInMilliseconds} from "date-fns";
-import { useFile,useSetFile } from "../../Context/StoryContext";
+
 import { useNavigate } from "react-router-dom";
 import { PiPlusBold } from "react-icons/pi";
 import './Home.css';
+
+import { addNewStory,removeStoryAfter24Hours,chargedStoryFromLocalStorage } from "../../feature/storySlice";
+import { useDispatch,useSelector } from 'react-redux'
+
 
 
 
 
 export default function Home () {
-    const file=useFile()
-    const setFile=useSetFile()
+   
     const setModal=useSetModal();
     const navigate =useNavigate()
+
+    const dispatch=useDispatch()
+    
+    // @ts-ignore
+    const file=useSelector((state)=>state.story)
+
+
+
+    // ADD STORY FROM LOCAL STORAGE 
+    useEffect(()=>{
+        if(localStorage.getItem("story"))
+          dispatch(chargedStoryFromLocalStorage()) 
+    },[])
+
+    
+
+
+
+
 
 // ADD NEW STORY
     const handleFileChange = (e) => {
         const validateFile = ["image/jpeg","image/png","image/jpg"];
         if(validateFile.includes(e.target.files[0].type)&&e.target.files[0].type){
-            setFile([...file,{story:URL.createObjectURL(e.target.files[0]),date:new Date()}]  );
+            const file = e.target.files[0];
+            const reader = new FileReader();
+    
+            reader.onload = (event) => {
+               
+                dispatch(addNewStory({story:event.target.result}))
+                
+            }
+            reader.readAsDataURL(file)
+           
+                
+              
+            
         }
         else{
             alert("Please select image file only");
@@ -29,14 +62,7 @@ export default function Home () {
 
 // DELETE STORY AFTER 24H
     useEffect(()=>{
-       const storyUpdate =  file.filter((item,index)=>{
-        return (differenceInMilliseconds(new Date(), item.date)/1000)<86400
-    })
-    if (JSON.stringify(storyUpdate) !== JSON.stringify(file)) {
-        setFile(storyUpdate);
-    }
-   
-     
+        dispatch(removeStoryAfter24Hours())
     },[file]) 
 
 
