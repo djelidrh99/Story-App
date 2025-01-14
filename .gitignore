@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.firebaserc
+.firebaserc
+firebase.json
+apphosting.yaml
