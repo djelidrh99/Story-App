@@ -181,7 +181,7 @@ export default function Dashboard() {
         </div>
 
       </div>
-      <div className="flex-grow overflow-hidden mt-[45px]  sm:mt-0 px-4 py-2 ">
+      <div className="flex-grow flex overflow-hidden mt-[45px]  sm:mt-0 px-4 py-2 ">
         <Outlet />
       </div>
       <div className="px-4 z-40 bg-white w-full fixed top-0 flex items-center border-b  gap-2 shadow-sm sm:hidden border-gray-200">

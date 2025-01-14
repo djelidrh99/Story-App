@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { PiPlusBold } from "react-icons/pi";
 import './Home.css';
 
-import { addNewStory,removeStoryAfter24Hours,chargedStoryFromLocalStorage } from "../../feature/storySlice";
+import { addNewStory,filterStoriesOlderThan24Hours,chargedStoryFromLocalStorage } from "../../feature/storySlice";
 import { useDispatch,useSelector } from 'react-redux'
 
 
@@ -62,7 +62,7 @@ export default function Home () {
 
 // DELETE STORY AFTER 24H
     useEffect(()=>{
-        dispatch(removeStoryAfter24Hours())
+        dispatch(filterStoriesOlderThan24Hours())
     },[file]) 
 
 
@@ -81,7 +81,7 @@ export default function Home () {
   return (
     
      
-    <div className="flex flex-col sm:px-10 pt-2 gap-5">
+    <div className="flex flex-grow flex-col sm:px-10 pt-2 gap-5">
         <div>
             <ul className="flex gap-2 overflow-x-auto scrollbar whitespace-nowrap">
                 <li className="sm:w-16  sm:h-16 w-14 h-14 cursor-pointer flex-shrink-0 rounded-full border-2 border-gray-400 flex justify-center items-center">
@@ -104,8 +104,8 @@ export default function Home () {
                 
             </ul>
         </div>
-        <div className="">
-              <button onClick={logout} >Deconected</button>
+        <div className="flex flex-1 justify-center items-center text-3xl font-bold text-gray-700">
+              Cooming Soon... 
         </div>
     </div>
   )

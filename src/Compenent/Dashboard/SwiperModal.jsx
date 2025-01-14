@@ -4,7 +4,8 @@ import { FaPause } from "react-icons/fa";
 import { FaPlay } from "react-icons/fa";
 import { LuX } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
-
+import { deleteStory } from "../../feature/storySlice";
+import { MdDelete } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -19,12 +20,14 @@ import { useSetModal } from "../../Context/ModalContext";
 import { useRef, useState } from "react";
 
 export default function SwiperModal() {
+  const dispatch = useDispatch();
   const setModal = useSetModal();
   // @ts-ignore
   const file = useSelector((state) => state.story);
   const [isAutoPlay, setIsAutoPlay] = useState(file && file.map(() => true));
   const swipeRef = useRef();
   const [currentWisth, setCurrentWidth] = useState("0%");
+  const [isDelete, setDelete] = useState(file && file.map(() => false));
 
   const autoplayStop = (i) => {
     // @ts-ignore
@@ -40,6 +43,22 @@ export default function SwiperModal() {
         prev.map((autoplay, index) => (i === index ? !autoplay : true))
       );
     }
+  };
+
+  const handelDelete = (i) => {
+    setDelete((prev) =>
+      prev.map((storyTodelet, index) => (index === i ? !storyTodelet : false))
+    );
+  };
+
+  const handelCancelDelete = () => {
+    setDelete((prev) => prev.map(() => false));
+  };
+
+  const handleConfirmDelete =  (i) => {
+    window.location.reload();
+    dispatch(deleteStory(i));
+   
   };
 
   return (
@@ -133,6 +152,52 @@ export default function SwiperModal() {
                     }}
                     className="absolute top-10 right-6 cursor-pointer text-white"
                   />
+                )}
+
+                {isActive && (
+                  <MdDelete
+                    onClick={() => {
+                      handelDelete(index);
+                      autoplayStop(index);
+                    }}
+                    className="absolute top-10 left-6 scale-125 cursor-pointer text-white"
+                  />
+                )}
+                {isDelete[index] && (
+                  <div className="absolute  top-0 left-0 flex justify-center items-center w-full h-full  bg-black/65 ">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{
+                        scale: 1,
+                      }}
+                      transition={{ duration: 0.4 }}
+                      className="flex flex-col relative rounded-lg px-2 shadow-lg z-50 bg-gray-100 pt-6 pb-2 justify-center items-center gap-5"
+                    >
+                      <div className="text-gray-600 text-center">
+                        {" "}
+                        Are you sure to Delete the story{" "}
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            handleConfirmDelete(index);
+                          }}
+                          className="px-1 py-2 rounded bg-blue-300 text-red-600"
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          onClick={() => {
+                            handelCancelDelete();
+                            autoplayStop(index);
+                          }}
+                          className="px-1 py-2"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </motion.div>
+                  </div>
                 )}
 
                 <img className="h-96 w-96" src={item.story} />
